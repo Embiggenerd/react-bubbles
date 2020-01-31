@@ -13,16 +13,31 @@ const ColorList = ({ colors, setColorList, updateColors }) => {
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   const axios = useAxiosWithAuth()
   const history = useHistory()
+
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
   };
 
-  const saveEdit = e => {
+  const saveEdit = async e => {
     e.preventDefault();
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    console.log('colorToEdit')
+    try {
+      const { data } = await axios.put('http://localhost:5000/api/colors/' + colorToEdit.id, colorToEdit)
+      console.log('color edit data', data)
+      setColorList(colors.map(c => {
+        if(c.id === data.id){
+          return data
+        }
+        return c
+      }))
+    } catch(e) {
+      console.log(e)
+      history.push('/')
+    }
   };
 
   const deleteColor = async ({ id }) => {
