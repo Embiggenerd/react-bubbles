@@ -26,7 +26,7 @@ export const Login = () => {
       localStorage.setItem('token', data.payload)
       setCredentials({ username: "", password: "" })
       setLoading(false)
-      history.push('/protected')
+      history.push('/bubbles')
     } catch (e) {
       setLoading(false)
       setError("Try Lambda School, i<3Lambd4")
