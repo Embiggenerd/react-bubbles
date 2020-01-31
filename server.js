@@ -150,11 +150,13 @@ app.put("/api/colors/:id", authenticator, (req, res) => {
 app.delete("/api/colors/:id", authenticator, (req, res) => {
   if (!req.params.id)
     res.status(400).send("Your request is missing the color id");
+  console.log('before', colors)
   colors = colors.filter(color => `${color.id}` !== req.params.id);
+  console.log('after', colors)
   res.status(202).send(req.params.id);
 });
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.send("App is working 👍");
 });
 

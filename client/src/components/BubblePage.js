@@ -25,7 +25,7 @@ export const BubblePage = () => {
   return (
     <>
       <h1>BUBBLES</h1>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList colors={colorList} setColorList={setColorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />
     </>
   );

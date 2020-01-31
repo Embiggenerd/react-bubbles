@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useAxiosWithAuth } from "../hooks";
+import { useHistory } from 'react-router-dom'
 
 const initialColor = {
   color: "",
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, setColorList, updateColors }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
-
+  const axios = useAxiosWithAuth()
+  const history = useHistory()
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
@@ -23,8 +25,15 @@ const ColorList = ({ colors, updateColors }) => {
     // where is is saved right now?
   };
 
-  const deleteColor = color => {
-    // make a delete request to delete this color
+  const deleteColor = async ({ id }) => {
+    try {
+      const { data } = await axios.delete('http://localhost:5000/api/colors/' + id)
+      console.log('delete data', data)
+      setColorList(colors.filter(c => c.id !== data))
+    } catch (e) {
+      console.log(e)
+      history.push('/')
+    }
   };
 
   return (
@@ -35,11 +44,11 @@ const ColorList = ({ colors, updateColors }) => {
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
               <span className="delete" onClick={e => {
-                    e.stopPropagation();
-                    deleteColor(color)
-                  }
-                }>
-                  x
+                e.stopPropagation();
+                deleteColor(color)
+              }
+              }>
+                x
               </span>{" "}
               {color.color}
             </span>
