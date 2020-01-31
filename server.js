@@ -1,20 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const CORS = require("cors");
+const nocache = require('nocache')
 
 const app = express();
 const token =
   "ahuBHejkJJiMDhmODZhZi0zaeLTQ4ZfeaseOGZgesai1jZWYgrTA07i73Gebhu98";
 
+app.use(nocache())
 app.use(bodyParser.json());
 app.use(CORS());
-app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
-  res.set('Surrogate-Control', 'no-store')
-  res.set('Pragma', 'no-cache')
-  res.set('Expires', 0)
-  next()
-})
 
 let colors = [
   {
